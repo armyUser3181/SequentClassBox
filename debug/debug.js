@@ -22,4 +22,6 @@ export default class dedugClass {
         return this.getPrint(console.error, flag, front, end);
     }
 
+    
+
 }

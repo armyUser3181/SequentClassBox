@@ -15,6 +15,8 @@ function main() {
 
     print("hello", "world");
 
+    l
+
 }
 
 main();
