@@ -69,10 +69,28 @@ export default class SequentClass {
 
     /**
      * 
-     * 
+     * @param {{element: HTMLElement, tag: string, action: (event: Event) => void}} param0 
+     */
+    deleteEventAction({element, tag, action}) {
+        element.removeEventListener(tag, action);
+    }
+
+    CreateSigleEventAction({element, tag, action, single = this.single}) {
+
+        const pushAction = e=>{
+            action(e)
+            if (single) {
+                this.deleteEventAction({element, tag, action: pushAction});
+            }
+        }
+        
+        return new InstantActionClass(pushAction);
+    }
+    /**
+     * @param {{name: string, single: boolean, element: HTMLElement, tag: string, action: (event: Event) => void}} param0
      */
     instantEventAdd({name, single, element, tag, action}) {
-        const event = new instantEventClass({name, single, element, tag, action : new InstantActionClass(action) });
+        const event = new InstantEventClass({name, single, element, tag, action : this.CreateSigleEventAction({element, tag, action, single}) });
         if (this.instantEvents.has(name)) {
             this.instantEvents.get(name).push(event);
         } else {
