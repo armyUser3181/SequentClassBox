@@ -1,0 +1,15 @@
+/*
+
+classic ->
+single ->
+loop ->
+chain -> one / one / one
+condition -> event - condition - action
+call -> one / event
+
+add
+delete
+
+
+
+*/

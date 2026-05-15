@@ -1,19 +1,5 @@
 
-/*
 
-classic ->
-single ->
-loop ->
-chain -> one / one / one
-condition -> event - condition - action
-call -> one / event
-
-add
-delete
-
-
-
-*/
 
 class InstantEventClass {
     /**
@@ -36,15 +22,24 @@ class InstantEventClass {
 class InstantActionClass {
     
     /**
-     * @type { (event: Event) => void } call
+     * @type { [(event: Event) => void] } functionList
      */
-    call;
-    /**
-     * @param { (event: Event) => void } call
-     */
-    constructor(call) {
-        this.call = call;
+    functionList;
+    constructor(...args) {
+        this.functionList = [];
+        this.push(...args);
     }
+
+    push(...args) {
+        this.functionList.push(...args);
+    }
+
+    get doing() {
+        return e=>{
+            this.functionList.forEach(action=>action(e));
+        }
+    }
+
 }
 
 export default class SequentClass {
@@ -61,6 +56,8 @@ export default class SequentClass {
     focusElement = null
     focusEventTag = null
     focusEventAction = null
+    flagChain = false
+    
 
     /**
      * @type {Map<string, [InstantEventClass]>} instantEvents
@@ -75,22 +72,21 @@ export default class SequentClass {
         element.removeEventListener(tag, action);
     }
 
-    CreateSigleEventAction({element, tag, action, single = this.single}) {
-
-        const pushAction = e=>{
-            action(e)
-            if (single) {
-                this.deleteEventAction({element, tag, action: pushAction});
-            }
-        }
-        
-        return new InstantActionClass(pushAction);
+    removeEventAction({name}) {
+        if(this.instantEvents.has(name)) this.instantEvents.delete(name)
     }
+
+    CreateSigleEventAction({element, tag, action, single = this.single}) {
+        return new InstantActionClass(action, single ? (e)=>{
+            this.deleteEventAction({element, tag, action: action});
+        } : null);
+    }
+
     /**
      * @param {{name: string, single: boolean, element: HTMLElement, tag: string, action: (event: Event) => void}} param0
      */
     instantEventAdd({name, single, element, tag, action}) {
-        const event = new InstantEventClass({name, single, element, tag, action : this.CreateSigleEventAction({element, tag, action, single}) });
+        const event = new InstantEventClass({name, single, element, tag, action });
         if (this.instantEvents.has(name)) {
             this.instantEvents.get(name).push(event);
         } else {
@@ -109,16 +105,21 @@ export default class SequentClass {
              * @param {{name: string, tag: string, element: HTMLElement, action: (event: Event) => void, single: boolean}} param0
              */
             classinc: ({name = this.focusName, tag = focusEventTag, element = this.focusElement, action = this.focusEventAction, single = false}) => {
-                return this.instantEventAdd({name, single, element, tag, action});
+                const Action = this.CreateSigleEventAction({element, tag, action, single});
+                return this.instantEventAdd({name, single, element, tag, action: Action});
             },
             single: ({name = this.focusName, tag = focusEventTag, element = this.focusElement, action = this.focusEventAction}) => {
-                return this.instantEventAdd({name, single: true, element, tag, action});
+                const single = true;
+                const Action = this.CreateSigleEventAction({element, tag, action, single});
+                return this.instantEventAdd({name, single, element, tag, action: Action});
             },
-            chain: ({name = this.focusName, tag = focusEventTag, element = this.focusElement, action = this.focusEventAction}) => {
-                const chainAction = e => {
-                    
+            chain: ({name = this.focusName, tag = focusEventTag, element = this.focusElement, action = this.focusEventAction, single = false}) => {
+
+                if(this.instantEvents.has(name)) {
+                    single = false;
                 }
-                return this.instantEventAdd({name, single: false, element, tag, action: chainAction});
+                const Action = this.CreateSigleEventAction({element, tag, action, single});
+                
             }
 
         }
