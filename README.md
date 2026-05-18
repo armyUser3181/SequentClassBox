@@ -18,6 +18,28 @@ event 로직에는 전통적인 dom의 작동 event는 물론
 
 추가 계획으로는 일련의 이벤트 루프를 직접 관리하는 관리자를 추가할 계획입니다
 
-## 형태
+## 개선안
 
-## 사용
+EventAction
+  lambda callback
+  lambda caller
+  lambda trigger
+  bool isBind
+  fn bind
+  fn unbind
+  HTMLElement target
+  string tag
+
+EventElement
+  list<EventAction> list
+  string type
+  
+
+EventClass
+  map<Event> map
+
+
+SequentClass
+  EventClass
+
+
