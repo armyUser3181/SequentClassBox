@@ -1,5 +1,6 @@
 
 import dedugClass from "./debug.js";
+import EventActionClass from "../EventActionClass.js";
 
 function main() {
     const d = new dedugClass();
@@ -15,7 +16,18 @@ function main() {
 
     print("hello", "world");
 
-    
+    const eventAction = new EventActionClass({
+        callback: (event) => {
+            console.log("event", event);
+        },
+        caller: ({
+            
+        }) => {
+            console.log("caller", event);
+        },
+        target: document.body,
+        tag: "click"
+    });
 
 }
 

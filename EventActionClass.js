@@ -2,7 +2,7 @@
 export default class EventActionClass {
     /**
      * 
-     * @param {{callback: (event: Event) => void, ({event: Event, target: Element, tag: string, callback: (event: Event) => void}) => void, target: Element, tag: string}} param0 
+     * @param {{callback: (event: Event) => void, caller: ({event: Event, target: Element, tag: string, callback: (event: Event) => void}) => void, target: Element, tag: string}} param0 
      */
     constructor({callback, caller, target, tag}) {
         this.callback = callback;
