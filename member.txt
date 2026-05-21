@@ -4,7 +4,7 @@ classic ->
 single ->
 loop ->
 chain -> one / one / one
-condition -> event - condition - action
+cond -> event - condition - action
 call -> one / event
 
 add

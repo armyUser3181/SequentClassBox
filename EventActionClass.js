@@ -1,8 +1,26 @@
 
+
+/**
+ * @typedef {Object} CallbackArgs
+ * @property {Event} event
+ * @property {Element} target
+ * @property {string} tag
+ * @property {any} args
+ */
+
+/**
+ * @typedef {Object} CallerArgs
+ * @property {Event} event
+ * @property {Element} target
+ * @property {string} tag
+ * @property {(args: any) => any} callback
+ */
+
+
 export default class EventActionClass {
     /**
      * 
-     * @param {{callback: (event: Event) => void, caller: ({event: Event, target: Element, tag: string, callback: (event: Event) => void}) => void, target: Element, tag: string}} param0 
+     * @param {{callback: (args: CallbackArgs) => void, caller: (args: CallerArgs) => void, target: Element, tag: string}} param0 
      */
     constructor({callback, caller, target, tag}) {
         this.callback = callback;
@@ -12,15 +30,19 @@ export default class EventActionClass {
     }
 
     /**
-     * @type {(event: Event) => void}
+     * @type {(args: CallbackArgs) => void}
      */
     callback;
     /**
-     * @type {({event: Event, target: Element, tag: string, callback: (event: Event) => void}) => void}
+     * @type {(event: Event) => (args: CallbackArgs) => void}
+     */
+    resolve;
+    /**
+     * @type {(args: CallerArgs) => void}
      */
     caller;
     /**
-     * @type {(event: Event) => void}
+     * @type {(args: CallbackArgs) => void}
      */
     trigger;
 
@@ -33,9 +55,15 @@ export default class EventActionClass {
      */
     tag;
 
-    start() {
+    get start() {
         if(this.isBind) this.unbind;
-        this.trigger = event => this.caller({event : event, target : this.target, tag : this.tag, callback : this.callback});
+        this.resolve = (event) => (args) => {
+            return this.callback({ event : event, target : this.target, tag : this.tag, args: args});
+        }
+        this.trigger = event => {
+            this.event = event;
+            this.caller({ event : event, target : this.target, tag : this.tag, callback : this.resolve(event) });
+        }
     }
 
     /**
@@ -48,12 +76,12 @@ export default class EventActionClass {
 
     get bind() {
         this.isBinded = true;
-        this.target.addEventListener(this.trigger);
+        this.target.addEventListener(this.tag, this.trigger);
     }
 
     get unbind() {
         this.isBinded = false;
-        this.target.removeEventListener(this.trigger);
+        this.target.removeEventListener(this.tag, this.trigger);
     }
 
 }

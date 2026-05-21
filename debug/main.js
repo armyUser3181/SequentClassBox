@@ -17,17 +17,21 @@ function main() {
     print("hello", "world");
 
     const eventAction = new EventActionClass({
-        callback: (event) => {
-            console.log("event", event);
+        callback: ({event, tag, target, args}) => {
+            console.log("event", ...args);
         },
         caller: ({
-            
+            callback, tag, event, target
         }) => {
-            console.log("caller", event);
+            callback(["hello", "world"]);
         },
         target: document.body,
-        tag: "click"
+        tag: "mouseup"
     });
+
+    eventAction.start
+    eventAction.bind
+
 
 }
 
