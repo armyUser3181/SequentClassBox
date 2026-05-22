@@ -13,12 +13,12 @@ export default class EventElementClass {
     /**
      * @type {EventActionClass[]}
      */
-    actions = [];
+    actions = new Array();
 
     /**
      * @type {Callers}
      */
-    callers = [];
+    callers = new Array();
 
     /**
      * @type {string}
@@ -28,8 +28,8 @@ export default class EventElementClass {
         
     }
 
-    push(eventAction) {
-        this.actions.push(eventAction);
+    push( ...args ) {
+        this.actions.push(...args);
         return this;
     }
 
@@ -40,44 +40,45 @@ export default class EventElementClass {
     }
 
     get setup() {
+        const self = this;
         return {
-            classic : ()=>{
-                this.callers[0] = ({
+            get classic() {
+                
+                self.callers[0] = ({
                     callback
                 }) => {
                     callback();
                 }
-                this.actions.forEach((action) => {
-                    action.caller = this.callers[0];
+                self.actions.forEach((action) => {
+                    action.caller = self.callers[0];
+                    action.start;
+                    action.bind;
                 });
-            },
-            chain : ()=>{
-                const number = 0;
-                this.callers[0] = ({
-                    callback
-                }) => {
-                    callback();
-                    this.actions[number].unbind;
-                    number++;
-                    this.actions[number].bind;
-                }
-                this.actions.forEach((action) => {
-                    action.caller = this.callers[0];
-                });
-                this.actions[0].bind
-            },
-            cond : ()=>{
                 
             },
-            call : ()=>{
+            get chain() {
+                let number = 0;
+                self.callers[0] = ({
+                    callback
+                }) => {
+                    callback();
+                    self.actions[number].unbind;
+                    number++;
+                    self.actions[number] ? self.actions[number].bind : (number = 0, self.actions[0].bind);
+                }
+                self.actions.forEach((action) => {
+                    action.caller = self.callers[0];
+                    action.start;
+                });
+                self.actions[0] && self.actions[0].bind;
+            },
+            get cond() {
+                
+            },
+            get call() {
 
             }
         }
-    }
-
-    start() {
-
-        return this;
     }
     
 }

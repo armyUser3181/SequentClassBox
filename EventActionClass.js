@@ -16,11 +16,14 @@
  * @property {(args: any) => any} callback
  */
 
+/**
+ * mechode getter only
+ */
 
 export default class EventActionClass {
     /**
      * 
-     * @param {{callback: (args: CallbackArgs) => void, caller: (args: CallerArgs) => void, target: Element, tag: string}} param0 
+     * @param {callback : (args: CallbackArgs) => void, caller : (args: CallerArgs) => void, target : Element, tag : string} param0 
      */
     constructor({callback, caller, target, tag}) {
         this.callback = callback;

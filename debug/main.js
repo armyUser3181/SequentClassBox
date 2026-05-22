@@ -1,6 +1,8 @@
 
+
 import dedugClass from "./debug.js";
 import EventActionClass from "../EventActionClass.js";
+import EventElementClass from "../EventElementClass.js";
 
 function main() {
     const d = new dedugClass();
@@ -30,9 +32,33 @@ function main() {
     });
 
     eventAction.start
-    eventAction.bind
+    //eventAction.bind
 
 
+    const eventElement = new EventElementClass();
+    const settingTextEvent = Text => {
+        const strings = Text.match(/([^\n\r]+)/g);
+
+        strings.forEach(string => {
+            const action = new EventActionClass({
+                callback: ({}) => {
+                    console.log("event", string);
+                },
+                target: document.body,
+                tag: "mouseup"
+            });
+            eventElement.push(action);
+        });
+
+        eventElement.setup.chain;
+    }
+
+    fetch("./text.txt")
+        .then(response => response.text())
+        .then(text => settingTextEvent(text));
+
+    console.log("end");
+    
 }
 
 main();
