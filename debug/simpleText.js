@@ -21,7 +21,7 @@ export default class simpleText {
 
     get bind() {
         if(!this.element) {
-            this.element = document.createElement("div");
+            this.element = document.createElement("p");
         }
         this.element.innerText = this.string;
         document.body.appendChild(this.element);

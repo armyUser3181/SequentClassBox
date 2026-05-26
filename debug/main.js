@@ -3,10 +3,10 @@
 import dedugClass from "./debug.js";
 import EventActionClass from "../EventActionClass.js";
 import EventElementClass from "../EventElementClass.js";
+import SimpleTextClass from "./simpleText.js";
 
 function main() {
     const d = new dedugClass();
-
 
     const flag = true;
     const front = "welcome to ";
@@ -17,6 +17,10 @@ function main() {
     const error = d.getError(flag, front, end);
 
     print("hello", "world");
+
+    const simpleText = new SimpleTextClass();
+    simpleText.innerText = "hello world";
+    console.log(simpleText.view);
 
     const eventAction = new EventActionClass({
         callback: ({event, tag, target, args}) => {
@@ -42,7 +46,10 @@ function main() {
         strings.forEach(string => {
             const action = new EventActionClass({
                 callback: ({}) => {
-                    console.log("event", string);
+                    //console.log("event", string);
+                    const simpleText = new SimpleTextClass();
+                    simpleText.innerText = string;
+                    console.log(simpleText.view);
                 },
                 target: document.body,
                 tag: "mouseup"
