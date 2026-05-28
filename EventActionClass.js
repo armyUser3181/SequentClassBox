@@ -1,9 +1,10 @@
 
+import EventEmitter from "./EventEmitter.js"
 
 /**
  * @typedef {Object} CallbackArgs
  * @property {Event} event
- * @property {Element} target
+ * @property {EventEmitter} target
  * @property {string} tag
  * @property {any} args
  */
@@ -11,7 +12,7 @@
 /**
  * @typedef {Object} CallerArgs
  * @property {Event} event
- * @property {Element} target
+ * @property {EventEmitter} target
  * @property {string} tag
  * @property {(args: any) => any} callback
  */
@@ -23,7 +24,7 @@
 export default class EventActionClass {
     /**
      * 
-     * @param {callback : (args: CallbackArgs) => void, caller : (args: CallerArgs) => void, target : Element, tag : string} param0 
+     * @param {callback : (args: CallbackArgs) => void, caller : (args: CallerArgs) => void, target : EventEmitter, tag : string} param0 
      */
     constructor({callback, caller, target, tag}) {
         this.callback = callback;
@@ -50,7 +51,7 @@ export default class EventActionClass {
     trigger;
 
     /**
-     * @type {Element}
+     * @type {EventEmitter}
      */
     target;
     /**
