@@ -1,11 +1,9 @@
-
-export default class simpleText {
-
-    constructor() {
-        this.string = "";
-        this.binded = false;
-        this.element = null;
-    }
+﻿export default class simpleText {
+    /** @type {string} */
+    string = "";
+    binded = false;
+    /** @type {HTMLElement|null} */
+    element = null;
 
     set innerText(text) {
         this.string = text;
@@ -20,9 +18,7 @@ export default class simpleText {
     }
 
     get bind() {
-        if(!this.element) {
-            this.element = document.createElement("p");
-        }
+        if (!this.element) this.element = document.createElement("p");
         this.element.innerText = this.string;
         document.body.appendChild(this.element);
         this.binded = true;
@@ -39,8 +35,4 @@ export default class simpleText {
         this.bind;
         return this.element;
     }
-
-    
-
-
 }

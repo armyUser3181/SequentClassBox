@@ -6,6 +6,7 @@ import EventElementClass from "../EventElementClass.js";
 import SimpleTextClass from "./simpleText.js";
 import EventEmitter from "../EventEmitter.js";
 
+/** @returns {void} */
 function main() {
     const d = new dedugClass();
 
