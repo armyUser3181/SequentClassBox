@@ -23,7 +23,7 @@ export default class EventEmitter {
         const list = this.map.get(tag);
         list.push( event );
 
-        this.#actionMapBind(tag);
+        this.#actionMapBind = tag;
     }
 
     remove( tag, event ) {
@@ -34,14 +34,15 @@ export default class EventEmitter {
          */
         const list = this.map.get(tag);
         const newList = list.filter(element => event !== element);
-        this.map.set(list);
+        this.map.set(tag, newList);
+        //console.log(list, newList, this.map.get(tag));
     }
 
     claer(tag) {
         if(undefined === tag ) {
             this.unbind;
-            this.map.clear;
-            this.#actionMap.clear;
+            this.map.clear();
+            this.#actionMap.clear();
         } else {
             this.map.set(tag, []);
         }
@@ -58,7 +59,7 @@ export default class EventEmitter {
         }
     }
 
-    get #actionMapBind(key) {
+    set #actionMapBind(key) {
         if(this.#actionMap.has(key)); else {
             this.#actionMap.set(key, this.#createAction(key));
         }

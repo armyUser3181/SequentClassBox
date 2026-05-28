@@ -4,6 +4,7 @@ import dedugClass from "./debug.js";
 import EventActionClass from "../EventActionClass.js";
 import EventElementClass from "../EventElementClass.js";
 import SimpleTextClass from "./simpleText.js";
+import EventEmitter from "../EventEmitter.js";
 
 function main() {
     const d = new dedugClass();
@@ -22,6 +23,17 @@ function main() {
     simpleText.innerText = "hello world";
     console.log(simpleText.view);
 
+    const eventEmitter = new EventEmitter(document.body);
+    eventEmitter.push("mouseup", e=>{
+        console.log("hello");
+    });
+    eventEmitter.push("mouseup", e=>{
+        console.log("world");
+    });
+    eventEmitter.bind;
+    //eventEmitter.claer();
+    
+
     const eventAction = new EventActionClass({
         callback: ({event, tag, target, args}) => {
             console.log("event", ...args);
@@ -31,12 +43,16 @@ function main() {
         }) => {
             callback(["hello", "world"]);
         },
-        target: document.body,
+        target: eventEmitter,
         tag: "mouseup"
     });
 
     eventAction.start
     //eventAction.bind
+
+    eventEmitter.claer();
+
+
 
 
     const eventElement = new EventElementClass();
@@ -51,14 +67,20 @@ function main() {
                     simpleText.innerText = string;
                     console.log(simpleText.view);
                 },
-                target: document.body,
+                target: eventEmitter,
                 tag: "mouseup"
             });
             eventElement.push(action);
         });
 
         eventElement.setup.chain;
+        console.log(eventEmitter.map)
+        eventEmitter.bind
     }
+
+    
+
+    //eventEmitter.bind;
 
     fetch("./text.txt")
         .then(response => response.text())

@@ -81,11 +81,13 @@ export default class EventActionClass {
     get bind() {
         this.isBinded = true;
         this.target.addEventListener(this.tag, this.trigger);
+        //this.target.bind
     }
 
     get unbind() {
         this.isBinded = false;
         this.target.removeEventListener(this.tag, this.trigger);
+        //this.target.unbind
     }
 
 }
