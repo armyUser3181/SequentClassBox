@@ -3,9 +3,10 @@ import EventEmitter from "./EventEmitter.js"
 
 /** @typedef {{event: Event, target: EventEmitter, tag: string, args: any}} CallbackArgs */
 /** @typedef {{event: Event, target: EventEmitter, tag: string, callback: (args: any) => any}} CallerArgs */
+/** @typedef {{callback:(args:CallbackArgs)=>void, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:string}} EventActionClassArgs */
 
 export default class EventActionClass {
-    /** @param {{callback:(args:CallbackArgs)=>void, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:string}} param0 */
+    /** @param {EventActionClassArgs} param0 */
     constructor({callback, caller, target, tag}) {
         this.callback = callback;
         this.caller = caller;

@@ -5,6 +5,7 @@ import EventActionClass from "../EventActionClass.js";
 import EventElementClass from "../EventElementClass.js";
 import SimpleTextClass from "./simpleText.js";
 import EventEmitter from "../EventEmitter.js";
+import EventHandler from "../EventHandler.js";
 
 /** @returns {void} */
 function main() {
@@ -57,9 +58,8 @@ function main() {
 
 
     const eventElement = new EventElementClass();
-    const settingTextEvent = Text => {
-        const strings = Text.match(/([^\n\r]+)/g);
-
+    const eventHandler = new EventHandler();
+    const event1 = strings => {
         strings.forEach(string => {
             const action = new EventActionClass({
                 callback: ({}) => {
@@ -78,14 +78,19 @@ function main() {
         console.log(eventEmitter.map)
         eventEmitter.bind
     }
-
-    
+    const event2 = strings => {
+        
+    }
+    const settingTextEvent = (Text, event) => {
+        const strings = Text.match(/([^\n\r]+)/g);
+        event(strings)
+    }
 
     //eventEmitter.bind;
 
     fetch("./text.txt")
         .then(response => response.text())
-        .then(text => settingTextEvent(text));
+        .then(text => settingTextEvent(text, event1));
 
     console.log("end");
     

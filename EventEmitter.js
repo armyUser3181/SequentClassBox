@@ -96,4 +96,26 @@
         return this.binded;
     }
 
+
+    static #weak = new WeakMap();
+
+    #weakPush() {
+        EventEmitter.#weak.set(this.element, this);
+        return this;
+    }
+
+    static find(element) {
+        const rs = EventEmitter.#weak.get(element);
+        return rs === undefined ? null : rs;
+    }
+
+    static form(element = document.body) {
+        const rs = EventEmitter.find(element);
+        if(rs !== null) return rs;
+        const emitter = new EventEmitter(element);
+        emitter.#weakPush();
+        return emitter;
+    }
+
+
 }
