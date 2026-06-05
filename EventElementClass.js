@@ -58,12 +58,16 @@ export default class EventElementClass {
                     const flow = callback();
                     if (flow === 'next') {
 
-                    } else if (flow === 'exit') {
+                    }
+                    if (flow === 'exit') {
 
                     }
                 }
                 self.callers[1] = ({ callback }) => {
+                    const flow = callback();
+                    if (flow === 'next') {
 
+                    }
                 }
             },
             get flow() {

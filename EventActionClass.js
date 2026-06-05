@@ -1,10 +1,11 @@
 import EventEmitter from "./EventEmitter.js"
 
 /** @typedef { keyof HTMLElementEventMap } EventTypeKeyof */
-/** @typedef { 'exit' | 'loop' | 'next' | 'null' | 'base' } CmdKeyof */
+/** @typedef { 'exit' | 'loop' | 'next' | 'null' | 'base' } CallbackCmd */
+/** @typedef { 'unbind' } CallerCmd */
 /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, args: any}} CallbackArgs */
-/** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => CmdKeyof}} CallerArgs */
-/** @typedef {{callback:(args:CallbackArgs)=>CmdKeyof, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */
+/** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => CallbackCmd}} CallerArgs */
+/** @typedef {{callback:(args:CallbackArgs)=>CallbackCmd, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */
 
 export default class EventActionClass {
     /** @param {EventActionClassArgs} param0 */
@@ -15,11 +16,11 @@ export default class EventActionClass {
         this.tag = tag;
     }
 
-    /** @type {(args: CallbackArgs) => CmdKeyof} */
+    /** @type {(args: CallbackArgs) => CallbackCmd} */
     callback;
-    /** @type {(event: Event) => (args: CallbackArgs) => CmdKeyof} */
+    /** @type {(event: Event) => (args: CallbackArgs) => CallbackCmd} */
     resolve;
-    /** @type {(args: CallerArgs) => void} */
+    /** @type {(args: CallerArgs) => CallerCmd} */
     caller;
     /** @type {(args: CallbackArgs) => void} */
     trigger;
@@ -37,7 +38,8 @@ export default class EventActionClass {
         }
         this.trigger = event => {
             this.event = event;
-            this.caller({ event, target: this.target, tag: this.tag, callback: this.resolve(event) });
+            const key = this.caller({ event, target: this.target, tag: this.tag, callback: this.resolve(event) });
+            if (key === 'unbind') this.unbind;
         }
     }
 
