@@ -8,34 +8,34 @@ export default class EventHandler {
     EventElements = new Map();
 
     /** @type {EventEmitter} */
-    #eventEmitter = null;
+    private__eventEmitter = null;
 
-    #element;
+    private__element;
 
     set eventEmitter(emitter) {
-        this.#eventEmitter = emitter;
+        this.private__eventEmitter = emitter;
     }
 
     set element(element) {
-        if( this.#eventEmitter === null ) this.#eventEmitter = EventEmitter.form(element);
-        this.#element = element;
+        if (this.private__eventEmitter === null) this.private__eventEmitter = EventEmitter.form(element);
+        this.private__element = element;
     }
 
     /**
      * @returns { EventEmitter | null | undefined }
      */
     get eventEmitter() {
-        return this.#eventEmitter === undefined || this.#eventEmitter === null ? this.eventEmitter = EventEmitter.form() : this.#eventEmitter;
+        return this.private__eventEmitter === undefined || this.private__eventEmitter === null ? this.eventEmitter = EventEmitter.form() : this.private__eventEmitter;
     }
 
     get element() {
-        return this.#element;
+        return this.private__element;
     }
 
     /** @param { { key : string, value : EventElementClass}[] } list  */
-    pushEventElemenets( ...list ) {
-        list.forEach( pair =>{
-            this.EventElements.set( pair.key, pair.value )
+    pushEventElemenets(...list) {
+        list.forEach(pair => {
+            this.EventElements.set(pair.key, pair.value)
         })
     }
 
@@ -43,15 +43,15 @@ export default class EventHandler {
         return new EventElementClass();
     }
 
-    pushCreateEventElement( name ) {
+    pushCreateEventElement(name) {
         const rs = this.createEventElement();
-        this.pushEventElemenets( {key: name, value: rs} );
+        this.pushEventElemenets({ key: name, value: rs });
         return rs;
     }
 
     /** @param { import("./EventActionClass").EventActionClassArgs } */
-    createEventAction({callback, caller, target = this.eventEmitter, tag}) {
-        return new EventActionClass({callback, caller, target, tag});
+    createEventAction({ callback, caller, target = this.eventEmitter, tag }) {
+        return new EventActionClass({ callback, caller, target, tag });
     }
 
 }

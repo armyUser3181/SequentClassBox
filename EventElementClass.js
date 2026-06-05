@@ -38,7 +38,7 @@ export default class EventElementClass {
                 // default
                 self.callers[0] = ({ callback }) => {
                     const flow = callback();
-                    if( flow === 'loop') {
+                    if (flow === 'loop') {
 
                     } else {
                         self.actions[number].unbind;
@@ -53,7 +53,19 @@ export default class EventElementClass {
                 self.actions[0] && self.actions[0].bind;
             },
             get cond() {},
-            get call() {},
+            get call() {
+                self.callers[0] = ({ callback }) => {
+                    const flow = callback();
+                    if (flow === 'next') {
+
+                    } else if (flow === 'exit') {
+
+                    }
+                }
+                self.callers[1] = ({ callback }) => {
+
+                }
+            },
             get flow() {
                 let index = 0;
                 self.callers[0] = ({ callback }) => {

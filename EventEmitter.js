@@ -9,29 +9,31 @@
     binded = false;
 
     /** @type {Map<string, Function>} */
-    #actionMap = new Map();
+    private__actionMap = new Map();
 
     /** @param {HTMLElement} element */
-    constructor( element ) {
+    constructor(element) {
         this.element = element;
     }
 
     /** @param {HTMLElementEventMap} tag @param {Function} event */
-    push( tag, event ) {
-        if( this.map.has(tag) ); else {
+    push(tag, event) {
+        if (this.map.has(tag));
+        else {
             this.map.set(tag, []);
         }
 
         /** @type {Function[]} */
         const list = this.map.get(tag);
-        list.push( event );
+        list.push(event);
 
-        this.#actionMapBind = tag;
+        this.private__actionMapBind = tag;
     }
 
     /** @param {HTMLElementEventMap} tag @param {Function} event */
-    remove( tag, event ) {
-        if( this.map.has(tag) ); else return;
+    remove(tag, event) {
+        if (this.map.has(tag));
+        else return;
 
         /** @type {Function[]} */
         const list = this.map.get(tag);
@@ -41,10 +43,10 @@
 
     /** @param {HTMLElementEventMap} [tag] */
     claer(tag) {
-        if(undefined === tag ) {
+        if (undefined === tag) {
             this.unbind;
             this.map.clear();
-            this.#actionMap.clear();
+            this.private__actionMap.clear();
         } else {
             this.map.set(tag, []);
         }
@@ -54,8 +56,8 @@
     removeEventListener = this.remove;
 
     /** @param {HTMLElementEventMap} tag @returns {Function} */
-    #createAction(tag) {
-        return event=>{
+    private__createAction(tag) {
+        return event => {
             this.map.get(tag).forEach(action => {
                 action(event);
             });
@@ -63,30 +65,32 @@
     }
 
     /** @param {string} key */
-    set #actionMapBind(key) {
-        if(this.#actionMap.has(key)); else {
-            this.#actionMap.set(key, this.#createAction(key));
+    set private__actionMapBind(key) {
+        if (this.private__actionMap.has(key));
+        else {
+            this.private__actionMap.set(key, this.private__createAction(key));
         }
     }
 
-    get #actionMapBinds() {
-        for( const key of this.map.keys() ) {
-            this.#actionMapBind(key);
+    get private__actionMapBinds() {
+        for (const key of this.map.keys()) {
+            this.private__actionMapBind(key);
         }
     }
 
     get bind() {
-        if( this.isBinded ) return;
-        for( const key of this.map.keys() ) {
-            this.element.addEventListener(key, this.#actionMap.get(key));
+        if (this.isBinded) return;
+        for (const key of this.map.keys()) {
+            this.element.addEventListener(key, this.private__actionMap.get(key));
         }
         this.binded = true;
     }
 
     get unbind() {
-        if( this.isBinded ); else return;
-        for( const key of this.map.keys() ) {
-            this.element.removeEventListener(key, this.#actionMap.get(key));
+        if (this.isBinded);
+        else return;
+        for (const key of this.map.keys()) {
+            this.element.removeEventListener(key, this.private__actionMap.get(key));
         }
         this.binded = false;
     }
@@ -97,23 +101,23 @@
     }
 
 
-    static #weak = new WeakMap();
+    static private__weak = new WeakMap();
 
-    #weakPush() {
-        EventEmitter.#weak.set(this.element, this);
+    private__weakPush() {
+        EventEmitter.private__weak.set(this.element, this);
         return this;
     }
 
     static find(element) {
-        const rs = EventEmitter.#weak.get(element);
+        const rs = EventEmitter.private__weak.get(element);
         return rs === undefined ? null : rs;
     }
 
     static form(element = document.body) {
         const rs = EventEmitter.find(element);
-        if(rs !== null) return rs;
+        if (rs !== null) return rs;
         const emitter = new EventEmitter(element);
-        emitter.#weakPush();
+        emitter.private__weakPush();
         return emitter;
     }
 

@@ -1,4 +1,3 @@
-
 import EventEmitter from "./EventEmitter.js"
 
 /** @typedef { keyof HTMLElementEventMap } EventTypeKeyof */
@@ -9,7 +8,7 @@ import EventEmitter from "./EventEmitter.js"
 
 export default class EventActionClass {
     /** @param {EventActionClassArgs} param0 */
-    constructor({callback, caller, target, tag}) {
+    constructor({ callback, caller, target, tag }) {
         this.callback = callback;
         this.caller = caller;
         this.target = target;
@@ -32,7 +31,7 @@ export default class EventActionClass {
     isBinded = false;
 
     get start() {
-        if(this.isBind) this.unbind;
+        if (this.isBind) this.unbind;
         this.resolve = (event) => (args) => {
             return this.callback({ event, target: this.target, tag: this.tag, args });
         }
