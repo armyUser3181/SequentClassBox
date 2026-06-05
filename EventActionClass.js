@@ -1,12 +1,11 @@
 
 import EventEmitter from "./EventEmitter.js"
 
-/** @typedef {keyof HTMLElementEventMap} EventTypeKeyof */
-/** @typedef { 'loop' | 'next' | 'single' } FlowCmdKeyof */
-/** @typedef { ( args: FlowCmdKeyof ) => void } FlowCmd */
+/** @typedef { keyof HTMLElementEventMap } EventTypeKeyof */
+/** @typedef { 'exit' | 'loop' | 'next' | 'null' | 'base' } CmdKeyof */
 /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, args: any}} CallbackArgs */
-/** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => FlowCmdKeyof}} CallerArgs */
-/** @typedef {{callback:(args:CallbackArgs)=>FlowCmdKeyof, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */
+/** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => CmdKeyof}} CallerArgs */
+/** @typedef {{callback:(args:CallbackArgs)=>CmdKeyof, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */
 
 export default class EventActionClass {
     /** @param {EventActionClassArgs} param0 */
@@ -17,9 +16,9 @@ export default class EventActionClass {
         this.tag = tag;
     }
 
-    /** @type {(args: CallbackArgs) => void} */
+    /** @type {(args: CallbackArgs) => CmdKeyof} */
     callback;
-    /** @type {(event: Event) => (args: CallbackArgs) => FlowCmdKeyof} */
+    /** @type {(event: Event) => (args: CallbackArgs) => CmdKeyof} */
     resolve;
     /** @type {(args: CallerArgs) => void} */
     caller;
@@ -27,7 +26,7 @@ export default class EventActionClass {
     trigger;
     /** @type {EventEmitter} */
     target;
-    /** @type {string} */
+    /** @type {EventTypeKeyof} */
     tag;
     /** @type {boolean} */
     isBinded = false;

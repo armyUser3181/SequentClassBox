@@ -55,8 +55,11 @@ export default class EventElementClass {
             get cond() {},
             get call() {},
             get flow() {
-                
-            }
+                let index = 0;
+                self.callers[0] = ({ callback }) => {
+
+                }
+            },
         }
     }
 }
