@@ -33,7 +33,7 @@ export default class EventActionClass {
 
     get start() {
         if(this.isBind) this.unbind;
-        this.resolve = (event, flow) => (args) => {
+        this.resolve = (event) => (args) => {
             return this.callback({ event, target: this.target, tag: this.tag, args });
         }
         this.trigger = event => {
