@@ -1,6 +1,6 @@
 ﻿import EventActionClass from "./EventActionClass.js";
 
-/** @typedef {(args : import("./EventActionClass").CallerArgs) => void} CallerElement */
+/** @typedef {(args : import("./EventActionClass").CallerArgs) => import("./EventActionClass.js").CallerCmd} CallerElement */
 /** @typedef {CallerElement[]} Callers */
 
 export default class EventElementClass {
@@ -57,18 +57,36 @@ export default class EventElementClass {
                 self.callers[0] = ({ callback }) => {
                     const flow = callback();
                     if (flow === 'next') {
-
+                        for (let i = 1; i < self.actions.length; i++) {
+                            self.actions[i].bind;
+                        }
+                        self.actions[0].unbind;
                     }
                     if (flow === 'exit') {
-
+                        self.actions[0].unbind;
                     }
                 }
                 self.callers[1] = ({ callback }) => {
                     const flow = callback();
                     if (flow === 'next') {
+                        return 'unbind';
+                    }
+                    if (flow === 'exit') {
+                        self.actions.forEach((value) => value.unbind);
+                    }
+                    if (flow === 'loop') {
 
+                    } else {
+                        reutrn 'unbind';
                     }
                 }
+                self.actions.forEach((value, index) => {
+                    if (index == 0) {
+                        value.caller = self.callers[0];
+                    } else {
+                        value.caller = self.callers[1];
+                    }
+                })
             },
             get flow() {
                 let index = 0;
