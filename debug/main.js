@@ -54,11 +54,10 @@ function main() {
 
     eventEmitter.claer();
 
-
-
-
     const eventElement = new EventElementClass();
     const eventHandler = new EventHandler();
+    eventHandler.eventEmitter = eventEmitter;
+
     const event1 = strings => {
         strings.forEach(string => {
             const action = new EventActionClass({
@@ -79,7 +78,30 @@ function main() {
         eventEmitter.bind
     }
     const event2 = strings => {
-        
+        const evel = eventHandler.pushCreateEventElement("drag");
+        evel.push(
+            eventHandler.createEventAction({
+                tag : "mousedown",
+                callback : args => {
+                    
+                },
+
+            }),
+            eventHandler.createEventAction({
+                tag : "mousemove",
+                callback : args => {
+                    
+                },
+            }),
+            eventHandler.createEventAction({
+                tag : "mouseup",
+                callback : args => {
+                    
+                },
+            }),
+        )
+        evel.setup.chain
+        eventHandler.eventEmitter.bind
     }
     const settingTextEvent = (Text, event) => {
         const strings = Text.match(/([^\n\r]+)/g);

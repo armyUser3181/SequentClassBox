@@ -1,11 +1,13 @@
 /*
 
 classic ->
-single ->
-loop ->
-chain -> one / one / one
-cond -> event - condition - action
-call -> one / event
+// single ->
+// loop ->
+// chain -> one / one / one
+// cond -> event - condition - action
+// call -> one / event
+only -> [ one ]
+flow
 
 add
 delete

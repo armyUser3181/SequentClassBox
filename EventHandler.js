@@ -21,6 +21,9 @@ export default class EventHandler {
         this.#element = element;
     }
 
+    /**
+     * @returns { EventEmitter | null | undefined }
+     */
     get eventEmitter() {
         return this.#eventEmitter === undefined || this.#eventEmitter === null ? this.eventEmitter = EventEmitter.form() : this.#eventEmitter;
     }

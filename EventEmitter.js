@@ -16,7 +16,7 @@
         this.element = element;
     }
 
-    /** @param {string} tag @param {Function} event */
+    /** @param {HTMLElementEventMap} tag @param {Function} event */
     push( tag, event ) {
         if( this.map.has(tag) ); else {
             this.map.set(tag, []);
@@ -29,7 +29,7 @@
         this.#actionMapBind = tag;
     }
 
-    /** @param {string} tag @param {Function} event */
+    /** @param {HTMLElementEventMap} tag @param {Function} event */
     remove( tag, event ) {
         if( this.map.has(tag) ); else return;
 
@@ -39,7 +39,7 @@
         this.map.set(tag, newList);
     }
 
-    /** @param {string} [tag] */
+    /** @param {HTMLElementEventMap} [tag] */
     claer(tag) {
         if(undefined === tag ) {
             this.unbind;
@@ -53,7 +53,7 @@
     addEventListener = this.push;
     removeEventListener = this.remove;
 
-    /** @param {string} tag @returns {Function} */
+    /** @param {HTMLElementEventMap} tag @returns {Function} */
     #createAction(tag) {
         return event=>{
             this.map.get(tag).forEach(action => {

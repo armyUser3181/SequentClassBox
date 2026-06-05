@@ -1,9 +1,12 @@
 
 import EventEmitter from "./EventEmitter.js"
 
-/** @typedef {{event: Event, target: EventEmitter, tag: string, args: any}} CallbackArgs */
-/** @typedef {{event: Event, target: EventEmitter, tag: string, callback: (args: any) => any}} CallerArgs */
-/** @typedef {{callback:(args:CallbackArgs)=>void, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:string}} EventActionClassArgs */
+/** @typedef {keyof HTMLElementEventMap} EventTypeKeyof */
+/** @typedef { 'loop' | 'next' | 'single' } FlowCmdKeyof */
+/** @typedef { ( args: FlowCmdKeyof ) => void } FlowCmd */
+/** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, args: any}} CallbackArgs */
+/** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => FlowCmdKeyof}} CallerArgs */
+/** @typedef {{callback:(args:CallbackArgs)=>FlowCmdKeyof, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */
 
 export default class EventActionClass {
     /** @param {EventActionClassArgs} param0 */
@@ -16,7 +19,7 @@ export default class EventActionClass {
 
     /** @type {(args: CallbackArgs) => void} */
     callback;
-    /** @type {(event: Event) => (args: CallbackArgs) => void} */
+    /** @type {(event: Event) => (args: CallbackArgs) => FlowCmdKeyof} */
     resolve;
     /** @type {(args: CallerArgs) => void} */
     caller;
@@ -31,7 +34,7 @@ export default class EventActionClass {
 
     get start() {
         if(this.isBind) this.unbind;
-        this.resolve = (event) => (args) => {
+        this.resolve = (event, flow) => (args) => {
             return this.callback({ event, target: this.target, tag: this.tag, args });
         }
         this.trigger = event => {
@@ -53,4 +56,6 @@ export default class EventActionClass {
         this.isBinded = false;
         this.target.removeEventListener(this.tag, this.trigger);
     }
+
+
 }

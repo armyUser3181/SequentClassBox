@@ -35,11 +35,16 @@ export default class EventElementClass {
             },
             get chain() {
                 let number = 0;
+                // default
                 self.callers[0] = ({ callback }) => {
-                    callback();
-                    self.actions[number].unbind;
-                    number++;
-                    self.actions[number] ? self.actions[number].bind : (number = 0, self.actions[0].bind);
+                    const flow = callback();
+                    if( flow === 'loop') {
+
+                    } else {
+                        self.actions[number].unbind;
+                        number++;
+                        self.actions[number] ? self.actions[number].bind : (number = 0, self.actions[0].bind);
+                    }
                 }
                 self.actions.forEach(action => {
                     action.caller = self.callers[0];
@@ -48,7 +53,10 @@ export default class EventElementClass {
                 self.actions[0] && self.actions[0].bind;
             },
             get cond() {},
-            get call() {}
+            get call() {},
+            get flow() {
+                
+            }
         }
     }
 }
