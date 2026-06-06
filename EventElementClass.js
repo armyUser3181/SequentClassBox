@@ -16,8 +16,12 @@ export default class EventElementClass {
         return this;
     }
 
-    clear() {
+    get unbind() {
         this.actions.forEach(action => action.unbind);
+    }
+
+    clear() {
+        this.unbind;
         this.actions = [];
         return this;
     }
@@ -72,12 +76,13 @@ export default class EventElementClass {
                         return 'unbind';
                     }
                     if (flow === 'exit') {
-                        self.actions.forEach((value) => value.unbind);
+                        self.unbind;
+                        return 'null';
                     }
                     if (flow === 'loop') {
-
+                        return 'null';
                     } else {
-                        reutrn 'unbind';
+                        return 'unbind';
                     }
                 }
                 self.actions.forEach((value, index) => {
@@ -90,10 +95,22 @@ export default class EventElementClass {
             },
             get flow() {
                 let index = 0;
+                let count = 0;
                 self.callers[0] = ({ callback }) => {
-
+                    switch( callback() ) {
+                        case 'loop': return 'null';
+                        case 'exit':
+                            self.unbind;
+                            return 'null';
+                        case 'next':
+                            self.actions[count].unbind;
+                            count++;
+                            self.actions[count] ? self.actions[number].bind : (number = 0, self.actions[0].bind);
+                            return 'null';
+                    }
                 }
+                self.actions[0] && self.actions[0].bind;
             },
-        }
+       }
     }
 }

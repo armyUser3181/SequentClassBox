@@ -2,7 +2,7 @@ import EventEmitter from "./EventEmitter.js"
 
 /** @typedef { keyof HTMLElementEventMap } EventTypeKeyof */
 /** @typedef { 'exit' | 'loop' | 'next' | 'null' | 'base' } CallbackCmd */
-/** @typedef { 'unbind' } CallerCmd */
+/** @typedef { 'unbind' | 'loop' | 'null' } CallerCmd */
 /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, args: any}} CallbackArgs */
 /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => CallbackCmd}} CallerArgs */
 /** @typedef {{callback:(args:CallbackArgs)=>CallbackCmd, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */
@@ -50,11 +50,13 @@ export default class EventActionClass {
     get bind() {
         this.isBinded = true;
         this.target.addEventListener(this.tag, this.trigger);
+        return this;
     }
 
     get unbind() {
         this.isBinded = false;
         this.target.removeEventListener(this.tag, this.trigger);
+        return this;
     }
 
 
