@@ -6,6 +6,7 @@ import EventElementClass from "../EventElementClass.js";
 import SimpleTextClass from "./simpleText.js";
 import EventEmitter from "../EventEmitter.js";
 import EventHandler from "../EventHandler.js";
+import EventFlowEnum from "../EventFlowEnum.js";
 
 /** @returns {void} */
 function main() {
@@ -115,6 +116,12 @@ function main() {
         .then(text => settingTextEvent(text, event1));
 
     console.log("end");
+
+    const efe = new EventFlowEnum()
+    efe.value = efe.ctoi('seek') | efe.ctoi('next') | efe.ctoi('null');
+    for( const value of efe ) {
+        console.log(value)
+    }
     
 }
 

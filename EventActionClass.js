@@ -1,8 +1,8 @@
 import EventEmitter from "./EventEmitter.js"
 
 /** @typedef { keyof HTMLElementEventMap } EventTypeKeyof */
-/** @typedef { 'exit' | 'loop' | 'next' | 'null' | 'base' } CallbackCmd */
-/** @typedef { 'unbind' | 'loop' | 'null' } CallerCmd */
+/** @typedef { import("./EventFlowEnum.js").CallbackCmd } CallbackCmd  */
+/** @typedef { import("./EventFlowEnum.js").CallerCmd } CallerCmd  */
 /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, args: any}} CallbackArgs */
 /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => CallbackCmd}} CallerArgs */
 /** @typedef {{callback:(args:CallbackArgs)=>CallbackCmd, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */

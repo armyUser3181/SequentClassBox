@@ -44,6 +44,8 @@ export default class EventElementClass {
                     const flow = callback();
                     if (flow === 'loop') {
 
+                    } else if(flow === 'seek') {
+                        
                     } else {
                         self.actions[number].unbind;
                         number++;
@@ -94,7 +96,7 @@ export default class EventElementClass {
                 })
             },
             get flow() {
-                let index = 0;
+                // let index = 0;
                 let count = 0;
                 self.callers[0] = ({ callback }) => {
                     switch( callback() ) {
