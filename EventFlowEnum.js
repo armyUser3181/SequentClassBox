@@ -88,9 +88,10 @@ export default class EventFlowEnum {
         return {
             next() {
                 while( true ) {
-                    const order = 1 << index++;
-                    if( order > val || index > skmap.size ) return { done: true };
-                    if( EventFlowEnum.itoc(order) ) return { done: false, value: EventFlowEnum.itoc(order) };
+                    const order = 1 << index;
+                    if( order > val || index > skmap.size ) return { done: true, value: undefined };
+                    index++;
+                    if( val & order ) return { done: false, value: EventFlowEnum.itoc(order) };
                 }
             }
         }
