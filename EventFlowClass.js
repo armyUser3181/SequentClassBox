@@ -12,10 +12,13 @@ export default class EventFlowClass {
 
     setEnum( ie ) {
         if( typeof ie === 'string') {
+            this.enum.setting = ie;
+        } else if( typeof ie === 'number' ) {
             this.enum.value = ie;
         } else {
             this.enum = ie;
         }
+        return this;
     }
 
     push( cmd, fun ) {
@@ -25,7 +28,8 @@ export default class EventFlowClass {
 
     run(  ) {
         for( const cmd of this.enum ) {
-
+            const func = this.map.get(cmd);
+            func && (this.enum.value & this.enum.ctoi(cmd)) && func();
         }
         return this;
     }
