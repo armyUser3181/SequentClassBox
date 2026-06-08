@@ -1,4 +1,6 @@
 ﻿import EventActionClass from "./EventActionClass.js";
+import EventFlowEnum from "./EventFlowEnum.js";
+import EventFlowClass from "./EventFlowClass.js";
 
 /** @typedef {(args : import("./EventActionClass").CallerArgs) => import("./EventActionClass.js").CallerCmd} CallerElement */
 /** @typedef {CallerElement[]} Callers */
@@ -61,7 +63,7 @@ export default class EventElementClass {
             get cond() {},
             get call() {
                 self.callers[0] = ({ callback }) => {
-                    const flow = callback();
+                    /* const flow = callback();
                     if (flow === 'next') {
                         const setmap = new Set();
                         for (let i = 1; i < self.actions.length; i++) {
@@ -78,7 +80,25 @@ export default class EventElementClass {
                     }
                     if (flow === 'quit') {
                         self.actions[0].unbind;
-                    }
+                    } */
+                    const flowClass = new EventFlowClass();
+                    flowClass.push('next', ()=>{
+                        const setmap = new Set();
+                        for (let i = 1; i < self.actions.length; i++) {
+                            self.actions[i].bind;
+                            setmap.add(self.actions[i].target);
+                        }
+                        self.actions[0].unbind;
+                        setmap.forEach(target => {
+                            target.rebind;
+                        })
+                    })
+                    flowClass.push('quit', ()=>{
+                        self.actions[0].unbind;
+                    })
+                    
+                    flowClass.setEnum( callback() );
+                    flowClass.run();
                 }
                 self.callers[1] = ({ callback }) => {
                     const flow = callback();

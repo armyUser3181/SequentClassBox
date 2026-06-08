@@ -1,4 +1,4 @@
-import EventFlowEnum from "./EventFlowEnum";
+import EventFlowEnum from "./EventFlowEnum.js";
 
 /**
  * @typedef { () => import("./EventFlowEnum").ACmd } FlowClassFunction
@@ -21,6 +21,11 @@ export default class EventFlowClass {
         return this;
     }
 
+    /**
+     * 
+     * @param {import("./EventFlowEnum").ACmd} cmd 
+     * @param { ()=>import("./EventFlowEnum").CallerCmd } fun 
+     */
     push( cmd, fun ) {
         this.map.set(cmd, fun);
         return this;
