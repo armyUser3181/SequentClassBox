@@ -8,8 +8,78 @@ import EventEmitter from "../EventEmitter.js";
 import EventHandler from "../EventHandler.js";
 import EventFlowEnum from "../EventFlowEnum.js";
 
+
+
+
 /** @returns {void} */
 function main() {
+    //part1();
+    part2();
+}
+
+main();
+
+function part2() {
+    const eventEmitter = new EventEmitter(document.body);
+    const div = document.createElement("div");
+    div.style.width = "200px";
+    div.style.height = "200px";
+    div.style.backgroundColor = "red";
+    document.body.appendChild(div);
+    const elementEventEmitter = new EventEmitter(div);
+
+
+    const eventElementClass = new EventElementClass();
+    const elementPoint = {};
+    elementPoint.x = 0;
+    elementPoint.y = 0;
+    eventElementClass.push(
+        new EventActionClass({
+            callback: ({event})=>{
+                const rect = event.target.getBoundingClientRect();
+                elementPoint.x = event.clientX - rect.left;
+                elementPoint.y = event.clientY - rect.top;
+                div.style.position = "absolute";
+                return "next";
+            }, caller: undefined, 
+            target: elementEventEmitter,
+            tag: "mousedown"
+        }), new EventActionClass({
+            callback: ({event})=>{
+
+                console.log("move")
+                const rect = div.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                const dx = x - elementPoint.x;
+                const dy = y - elementPoint.y;
+
+                const left = parseInt(div.style.left || 0) + dx;
+                const top = parseInt(div.style.top || 0) + dy;
+
+                
+
+                div.style.left = left + "px";
+                div.style.top = top + "px";
+
+                return "loop";
+            }, caller: undefined,
+            target: eventEmitter,
+            tag: "mousemove"
+        }), new EventActionClass({
+            callback: ({event})=>{
+                return 'try';
+            }, caller: undefined, 
+            target: eventEmitter,
+            tag: "mouseup"
+        }),
+    )
+    eventElementClass.setup.call;
+    elementEventEmitter.bind;
+}
+
+function part1() {
     const d = new dedugClass();
 
     const flag = true;
@@ -122,7 +192,4 @@ function main() {
     for( const value of efe ) {
         console.log(value)
     }
-    
 }
-
-main();

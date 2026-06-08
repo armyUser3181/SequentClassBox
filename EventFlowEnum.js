@@ -1,10 +1,10 @@
 
-/** @typedef { 'exit' | 'loop' | 'next' | 'null' | 'base' | 'seek' } CallbackCmd */
+/** @typedef { 'quit' | 'exit' | 'loop' | 'next' | 'null' | 'base' | 'seek' | 'try' } CallbackCmd */
 /** @typedef { 'unbind' | 'loop' | 'null' } CallerCmd */
 /** @typedef { CallbackCmd | CallerCmd } ACmd */
 
 function createFairMap() {
-    const list = [ 'exit', 'loop', 'next', 'null', 'base', 'seek' ];
+    const list = [ 'quit', 'exit', 'loop', 'next', 'null', 'base', 'seek', 'unbind', 'try' ];
     /** @type {Map<Number, ACmd>} */
     const valmap = new Map()
     /** @type {Map<ACmd, Number>} */

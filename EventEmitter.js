@@ -95,6 +95,11 @@
         this.binded = false;
     }
 
+    get rebind() {
+        this.unbind;
+        this.bind;
+    }
+
     /** @returns {boolean} */
     get isBinded() {
         return this.binded;

@@ -63,23 +63,36 @@ export default class EventElementClass {
                 self.callers[0] = ({ callback }) => {
                     const flow = callback();
                     if (flow === 'next') {
+                        const setmap = new Set();
                         for (let i = 1; i < self.actions.length; i++) {
                             self.actions[i].bind;
+                            setmap.add(self.actions[i].target);
                         }
                         self.actions[0].unbind;
+                        setmap.forEach(target => {
+                            target.rebind;
+                        })
                     }
                     if (flow === 'exit') {
+                        self.actions[0].unbind;
+                    }
+                    if (flow === 'quit') {
                         self.actions[0].unbind;
                     }
                 }
                 self.callers[1] = ({ callback }) => {
                     const flow = callback();
+                    
                     if (flow === 'next') {
                         return 'unbind';
                     }
-                    if (flow === 'exit') {
+                    if (flow === 'exit' || flow === 'quit') {
                         self.unbind;
                         return 'null';
+                    }
+                    if (flow === 'try') {
+                        self.unbind;
+                        self.actions[0] && self.actions[0].bind;
                     }
                     if (flow === 'loop') {
                         return 'null';
@@ -93,7 +106,10 @@ export default class EventElementClass {
                     } else {
                         value.caller = self.callers[1];
                     }
+                    value.start;
                 })
+                self.actions[0] && self.actions[0].bind;
+                //self.actions[1] && self.actions[1].bind;
             },
             get flow() {
                 // let index = 0;
@@ -102,6 +118,9 @@ export default class EventElementClass {
                     switch( callback() ) {
                         case 'loop': return 'null';
                         case 'exit':
+                            self.unbind;
+                            return 'null';
+                        case 'quit':
                             self.unbind;
                             return 'null';
                         case 'next':
