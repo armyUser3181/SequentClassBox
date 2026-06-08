@@ -7,6 +7,7 @@ import SimpleTextClass from "./simpleText.js";
 import EventEmitter from "../EventEmitter.js";
 import EventHandler from "../EventHandler.js";
 import EventFlowEnum from "../EventFlowEnum.js";
+import simpleText from "./simpleText.js";
 
 
 
@@ -21,62 +22,73 @@ main();
 
 function part2() {
     const eventEmitter = new EventEmitter(document.body);
-    const div = document.createElement("div");
-    div.style.width = "200px";
-    div.style.height = "200px";
-    div.style.backgroundColor = "red";
-    document.body.appendChild(div);
-    const elementEventEmitter = new EventEmitter(div);
 
+    const createDiv = ({ width = "200px", height = "200px", color = "red" }) => {
+        const div = document.createElement('div');
+        div.style.width = width; div.style.height = height; div.style.backgroundColor = color;
+        return div;
+    }
+    const settingDiv = ( args = { element: createDiv({}), } )=>{
+        const div = {};
+        div.element = args.element;
+        div.eventEmitter = new EventEmitter(div.element);
+        document.body.appendChild(div.element);
+        div.eventElement = new EventElementClass();
+        div.dragPoint = {};
+        div.dragPoint.x = 0;
+        div.dragPoint.y = 0;
+        const labels = new simpleText();
+        labels.setPoint = { right: '40px', top: '40px' };
+        div.eventElement.push(
+            new EventActionClass({
+                callback: ({event})=>{
+                    event.target.style.position = "absolute";
+                    const rect = event.target.getBoundingClientRect();
+                    div.dragPoint.x = event.clientX - rect.left;
+                    div.dragPoint.y = event.clientY - rect.top;
+                    event.target.style.left = rect.left + 'px';
+                    event.target.style.top = rect.top + 'px';
+                    return "next";
+                }, caller: undefined, 
+                target: div.eventEmitter,
+                tag: "mousedown"
+            }), new EventActionClass({
+                callback: ({event})=>{
+                    const left = event.clientX - div.dragPoint.x;
+                    const top = event.clientY - div.dragPoint.y;
+                    div.element.style.left = left + "px";
+                    div.element.style.top = top + "px";
+                    const outString = `${left}px / ${top}px`;
+                    labels.innerText = outString;
+                    //labels.bind;
+                    return "loop";
+                }, caller: undefined,
+                target: eventEmitter,
+                tag: "mousemove"
+            }), new EventActionClass({
+                callback: ({})=>{
+                    return 'try';
+                }, caller: undefined, 
+                target: eventEmitter,
+                tag: "mouseup"
+            }),
+        )
+        div.eventElement.setup.call;
+        div.eventEmitter.bind;
+        return div;
+    }
+    const divElements = [
+        createDiv({color: 'red'}),
+        createDiv({color: 'blue'}),
+        createDiv({color: 'yellow'}),
+    ]
 
-    const eventElementClass = new EventElementClass();
-    const elementPoint = {};
-    elementPoint.x = 0;
-    elementPoint.y = 0;
-    eventElementClass.push(
-        new EventActionClass({
-            callback: ({event})=>{
-                const rect = event.target.getBoundingClientRect();
-                elementPoint.x = event.clientX - rect.left;
-                elementPoint.y = event.clientY - rect.top;
-                div.style.position = "absolute";
-                return "next";
-            }, caller: undefined, 
-            target: elementEventEmitter,
-            tag: "mousedown"
-        }), new EventActionClass({
-            callback: ({event})=>{
+    const divs = [];
 
-                console.log("move")
-                const rect = div.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
-
-                const dx = x - elementPoint.x;
-                const dy = y - elementPoint.y;
-
-                const left = parseInt(div.style.left || 0) + dx;
-                const top = parseInt(div.style.top || 0) + dy;
-
-                
-
-                div.style.left = left + "px";
-                div.style.top = top + "px";
-
-                return "loop";
-            }, caller: undefined,
-            target: eventEmitter,
-            tag: "mousemove"
-        }), new EventActionClass({
-            callback: ({event})=>{
-                return 'try';
-            }, caller: undefined, 
-            target: eventEmitter,
-            tag: "mouseup"
-        }),
-    )
-    eventElementClass.setup.call;
-    elementEventEmitter.bind;
+    for( const element of divElements ) {
+        divs.push( settingDiv({element: element}) );
+    }
+    
 }
 
 function part1() {
