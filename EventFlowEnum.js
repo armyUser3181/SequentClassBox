@@ -2,6 +2,7 @@
 /** @typedef { 'quit' | 'exit' | 'loop' | 'next' | 'null' | 'base' | 'seek' | 'try' } CallbackCmd */
 /** @typedef { 'unbind' | 'loop' | 'null' } CallerCmd */
 /** @typedef { CallbackCmd | CallerCmd } ACmd */
+/** @typedef { ACmd | ACmd[] | number } AArgs */
 
 function createFairMap() {
     const list = [ 'quit', 'exit', 'loop', 'next', 'null', 'base', 'seek', 'unbind', 'try' ];
@@ -138,6 +139,21 @@ export default class EventFlowEnum {
 
     [Symbol.iterator]() {
         return EventFlowEnum.getIterator(this.value);
+    }
+
+    /**
+     * @param { AArgs } key
+     */
+    set formSet(key) {
+        if( Array.isArray(key) ) {
+            key.forEach(keyword=>{
+                this.add = keyword
+            })
+        } else if( typeof key === 'string') {
+            this.value = EventFlowEnum.ctoi(key);
+        } else if( typeof key === 'number') {
+            this.value = key;
+        }
     }
 
 }

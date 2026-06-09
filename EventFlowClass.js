@@ -1,41 +1,55 @@
 import EventFlowEnum from "./EventFlowEnum.js";
 
+
+const subSetEnumFunction = key => {
+    const en = new EventFlowEnum();
+    
+}
 /**
  * @typedef { () => import("./EventFlowEnum").ACmd } FlowClassFunction
  */
 export default class EventFlowClass {
-    enum = new EventFlowEnum;
+    inEnum = new EventFlowEnum;
+    outEnum = new EventFlowEnum;
     /**
      * @type { Map<import("./EventFlowEnum").ACmd, FlowClassFunction> }
      */
     map = new Map;
 
     setEnum( ie ) {
-        if( typeof ie === 'string') {
-            this.enum.setting = ie;
-        } else if( typeof ie === 'number' ) {
-            this.enum.value = ie;
-        } else {
-            this.enum = ie;
-        }
+        this.inEnum.formSet = ie;
         return this;
     }
 
+
+
     /**
      * 
-     * @param {import("./EventFlowEnum").ACmd} cmd 
+     * @param { import("./EventFlowEnum.js").AArgs } cmd 
      * @param { ()=>import("./EventFlowEnum").CallerCmd } fun 
      */
     push( cmd, fun ) {
-        this.map.set(cmd, fun);
+        const enums = new EventFlowEnum();
+        enums.formSet = cmd;
+        for( const key of enums) {
+            this.map.set(key, fun);
+        }
+        //this.map.set(cmd, fun);
         return this;
     }
 
     run(  ) {
-        for( const cmd of this.enum ) {
+        for( const cmd of this.inEnum ) {
             const func = this.map.get(cmd);
-            func && (this.enum.value & this.enum.ctoi(cmd)) && func();
+            if( func && (this.inEnum.value & this.inEnum.ctoi(cmd)) ) {
+                const ru = func();
+                ru && (this.outEnum.value |= ru );
+            }
         }
         return this;
+    }
+
+    get returns() {
+        return this.outEnum;
     }
 }

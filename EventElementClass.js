@@ -63,24 +63,6 @@ export default class EventElementClass {
             get cond() {},
             get call() {
                 self.callers[0] = ({ callback }) => {
-                    /* const flow = callback();
-                    if (flow === 'next') {
-                        const setmap = new Set();
-                        for (let i = 1; i < self.actions.length; i++) {
-                            self.actions[i].bind;
-                            setmap.add(self.actions[i].target);
-                        }
-                        self.actions[0].unbind;
-                        setmap.forEach(target => {
-                            target.rebind;
-                        })
-                    }
-                    if (flow === 'exit') {
-                        self.actions[0].unbind;
-                    }
-                    if (flow === 'quit') {
-                        self.actions[0].unbind;
-                    } */
                     const flowClass = new EventFlowClass();
                     flowClass.push('next', ()=>{
                         const setmap = new Set();
@@ -93,7 +75,7 @@ export default class EventElementClass {
                             target.rebind;
                         })
                     })
-                    flowClass.push('quit', ()=>{
+                    flowClass.push(['quit', 'exit'], ()=>{
                         self.actions[0].unbind;
                     })
                     
@@ -101,7 +83,7 @@ export default class EventElementClass {
                     flowClass.run();
                 }
                 self.callers[1] = ({ callback }) => {
-                    const flow = callback();
+                    /*const flow = callback();
                     
                     if (flow === 'next') {
                         return 'unbind';
@@ -118,7 +100,27 @@ export default class EventElementClass {
                         return 'null';
                     } else {
                         return 'unbind';
-                    }
+                    } */
+
+                    const flowClass = new EventFlowClass();
+                    flowClass.push('next', ()=>{
+                        return 'unbind';
+                    })
+                    .push(['exit', 'quit'], ()=>{
+                        self.unbind;
+                        return 'null';
+                    })
+                    .push('loop', ()=>{
+                        return 'null';
+                    })
+                    .push('try', ()=>{
+                        self.unbind;
+                        self.actions[0] && self.actions[0].bind;
+                        return 'unbind';
+                    })
+                    flowClass.setEnum( callback() );
+                    return flowClass.run().returns;
+
                 }
                 self.actions.forEach((value, index) => {
                     if (index == 0) {

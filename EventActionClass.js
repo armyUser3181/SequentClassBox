@@ -1,4 +1,5 @@
 import EventEmitter from "./EventEmitter.js"
+import EventFlowClass from "./EventFlowClass.js";
 
 /** @typedef { keyof HTMLElementEventMap } EventTypeKeyof */
 /** @typedef { import("./EventFlowEnum.js").CallbackCmd } CallbackCmd  */
@@ -39,7 +40,15 @@ export default class EventActionClass {
         this.trigger = event => {
             this.event = event;
             const key = this.caller({ event, target: this.target, tag: this.tag, callback: this.resolve(event) });
-            if (key === 'unbind') this.unbind;
+            if(key) {
+                const flowClass = new EventFlowClass()
+                flowClass.push('unbind', ()=>{
+                    this.unbind;
+                })
+
+                flowClass.run();
+
+            }
         }
     }
 
