@@ -4,7 +4,8 @@ import EventFlowClass from "./EventFlowClass.js";
 /** @typedef { keyof HTMLElementEventMap } EventTypeKeyof */
 /** @typedef { import("./EventFlowEnum.js").CallbackCmd } CallbackCmd  */
 /** @typedef { import("./EventFlowEnum.js").CallerCmd } CallerCmd  */
-/** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, args: any}} CallbackArgs */
+// /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, args: any}} CallbackArgs */
+/** @typedef { import("./argsTypes.js").ArgsIncallbackInEventActionClassType } CallbackArgs */
 /** @typedef {{event: Event, target: EventEmitter, tag: EventTypeKeyof, callback: (args: any) => CallbackCmd}} CallerArgs */
 /** @typedef {{callback:(args:CallbackArgs)=>CallbackCmd, caller:(args:CallerArgs)=>void, target:EventEmitter, tag:EventTypeKeyof}} EventActionClassArgs */
 
@@ -23,7 +24,7 @@ export default class EventActionClass {
     resolve;
     /** @type {(args: CallerArgs) => CallerCmd} */
     caller;
-    /** @type {(args: CallbackArgs) => void} */
+    /** @type {(event : Event) => void} */
     trigger;
     /** @type {EventEmitter} */
     target;
@@ -31,11 +32,21 @@ export default class EventActionClass {
     tag;
     /** @type {boolean} */
     isBinded = false;
+    /** @type {import("./argsTypes.js").CallInArgsIncallbackInEventActionClassType} */
+    call
 
     get start() {
         if (this.isBind) this.unbind;
+        this.call = {
+            set target( arg ) {
+                if( typeof arg === 'number') {
+
+                }
+                
+            }
+        }
         this.resolve = (event) => (args) => {
-            return this.callback({ event, target: this.target, tag: this.tag, args });
+            return this.callback({ event, target: this.target, tag: this.tag, call: {}, args });
         }
         this.trigger = event => {
             this.event = event;
@@ -46,6 +57,7 @@ export default class EventActionClass {
                     this.unbind;
                 })
 
+                flowClass.setValue = key;
                 flowClass.run();
 
             }
