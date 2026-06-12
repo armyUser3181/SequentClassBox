@@ -1,33 +1,27 @@
 import EventFlowEnum from "./EventFlowEnum.js";
 
-
-/* const subSetEnumFunction = key => {
-    const en = new EventFlowEnum();
-} */
-
 /**
- * @typedef { () => import("./EventFlowEnum").ACmd } FlowClassFunction
+ * @typedef { () => import("./EventFlowEnum.js").ACmd } FlowClassFunction
  */
 
+export default class EventFlowClass{
 
-export default class FlowClass {
-
-    constructor() {
-        this.values
-        this.returns
-    }
-
-    setValue(element) {
-        this.values = element;
-    }
-
-    
-    functionMap = new Map;
 
     /**
-     * 
-     * @param { import("./EventFlowEnum.js").AArgs } cmd 
-     * @param { ()=>import("./EventFlowEnum").CallerCmd } fun 
+     * @type { Map<import("./EventFlowEnum").ACmd, FlowClassFunction> }
+     */
+    functionMap;
+
+    returns;
+
+    constructor() {
+        this.values = new EventFlowEnum();
+        this.returns = new EventFlowEnum();
+        this.functionMap = new Map();
+    }
+
+    /**
+     * @param {import("./EventFlowEnum.js").ACmd} key @param {FlowClassFunction} fun
      */
     push( cmd, fun ) {
         const enums = new EventFlowEnum();
@@ -50,33 +44,17 @@ export default class FlowClass {
         return this;
     }
 
-    get returns() {
-        return this.returns;
-    }
-
-}
-
-export default class EventFlowClass extends FlowClass {
-
-    constructor() {
-        super();
-        this.values = new EventFlowEnum;
-        this.returns = new EventFlowEnum;
-        this.push = this.push;
-        this.run = this.run;
-
-        /**
-     * @type { Map<import("./EventFlowEnum").ACmd, FlowClassFunction> }
-     */
-        this.functionMap = this.functionMap
-    }
-
     /**
+     * @param { import("./EventFlowEnum.js").ACmd | EventFlowEnum | Number } ie
      * @override
      */
     setValue( ie ) {
         this.values.formSet = ie;
         return this;
+    }
+
+    get returns() {
+        return this.returns;
     }
 
 }

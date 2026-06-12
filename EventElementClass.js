@@ -75,11 +75,8 @@ export default class EventElementClass {
                             target.rebind;
                         })
                     })
-                    flowClass.push(['quit', 'exit'], ()=>{
-                        self.actions[0].unbind;
-                    })
                     
-                    flowClass.setEnum( callback() );
+                    flowClass.setValue( callback() );
                     flowClass.run();
                 }
                 self.callers[1] = ({ callback }) => {
@@ -106,10 +103,6 @@ export default class EventElementClass {
                     flowClass.push('next', ()=>{
                         return 'unbind';
                     })
-                    .push(['exit', 'quit'], ()=>{
-                        self.unbind;
-                        return 'null';
-                    })
                     .push('loop', ()=>{
                         return 'null';
                     })
@@ -118,7 +111,7 @@ export default class EventElementClass {
                         self.actions[0] && self.actions[0].bind;
                         return 'unbind';
                     })
-                    flowClass.setEnum( callback() );
+                    flowClass.setValue( callback() );
                     return flowClass.run().returns;
 
                 }

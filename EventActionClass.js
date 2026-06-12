@@ -38,12 +38,7 @@ export default class EventActionClass {
     get start() {
         if (this.isBind) this.unbind;
         this.call = {
-            set target( arg ) {
-                if( typeof arg === 'number') {
-
-                }
-                
-            }
+            
         }
         this.resolve = (event) => (args) => {
             return this.callback({ event, target: this.target, tag: this.tag, call: {}, args });
