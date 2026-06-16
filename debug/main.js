@@ -16,9 +16,40 @@ import simpleText from "./simpleText.js";
 function main() {
     //part1();
     part2();
+    //part3();
 }
 
 main();
+
+function part3() {
+    const htmlEmitter = new EventEmitter(document.getElementsByName('html').item(0));
+
+    const deg = new dedugClass();
+    const dlog = deg.getLog(true, '', '');
+
+    const createWindow = ( args = { width = '200px', height = '200px', color = 'red', headerWidth = '20px', backgroundColor = 'white', borderStyle = 'solid', borderColor = 'black'  }) => {
+        const window = document.createElement('div');
+        window.style.width = args.width; window.style.height = args.height; window.style.backgroundColor = args.backgroundColor;
+        window.style.padding = '0px';
+        window.style.borderStyle = args.borderStyle; window.style.borderColor = args.borderColor;
+        const windowHeader = document.createElement('div');
+        windowHeader.style.margin = '0px';
+        windowHeader.style.borderStyle = args.borderStyle; windowHeader.style.borderColor = args.borderColor;
+        windowHeader.style.height = args.headerWidth;
+        windowHeader.style.backgroundColor = args.color;
+        return window;
+    }
+
+    const settingWindows = ( args = { element: createWindow({}) } ) => {
+        const element = {};
+        element.element = args.element;
+        element.thisEmitter = new EventEmitter(element.element);
+        element.headEmitter = new EventEmitter(element.element.childNodes.item(0));
+        dlog(element.element.childNodes.item(0));
+    }
+
+    settingWindows();
+}
 
 function part2() {
     const eventEmitter = new EventEmitter(document.getElementsByTagName('html').item(0));
