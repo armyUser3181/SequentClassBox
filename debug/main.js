@@ -21,7 +21,7 @@ function main() {
 main();
 
 function part2() {
-    const eventEmitter = new EventEmitter(document.body);
+    const eventEmitter = new EventEmitter(document.getElementsByTagName('html').item(0));
 
     const createDiv = ({ width = "200px", height = "200px", color = "red" }) => {
         const div = document.createElement('div');

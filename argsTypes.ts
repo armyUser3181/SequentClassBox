@@ -2,8 +2,8 @@ import { EventTypeKeyof } from "./EventActionClass";
 import EventEmitter from "./EventEmitter";
 
 export interface CallInArgsIncallbackInEventActionClassType {
-    target( arg : number | 'next' | 'front' | 'this' | 'start' )
-
+    target( arg : number | 'next' | 'front' | 'this' | 'start' ) : this
+    
 }
 
 export interface ArgsIncallbackInEventActionClassType {
