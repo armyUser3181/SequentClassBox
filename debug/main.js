@@ -15,8 +15,8 @@ import simpleText from "./simpleText.js";
 /** @returns {void} */
 function main() {
     //part1();
-    part2();
-    //part3();
+    //part2();
+    part3();
 }
 
 main();
@@ -27,7 +27,8 @@ function part3() {
     const deg = new dedugClass();
     const dlog = deg.getLog(true, '', '');
 
-    const createWindow = ( args = { width = '200px', height = '200px', color = 'red', headerWidth = '20px', backgroundColor = 'white', borderStyle = 'solid', borderColor = 'black'  }) => {
+    const createWindow = ( { width = '200px', height = '200px', color = 'red', headerWidth = '20px', backgroundColor = 'white', borderStyle = 'solid', borderColor = 'black'  }) => {
+        const args = { width, height, color, headerWidth, backgroundColor, borderStyle, borderColor };
         const window = document.createElement('div');
         window.style.width = args.width; window.style.height = args.height; window.style.backgroundColor = args.backgroundColor;
         window.style.padding = '0px';
@@ -37,15 +38,57 @@ function part3() {
         windowHeader.style.borderStyle = args.borderStyle; windowHeader.style.borderColor = args.borderColor;
         windowHeader.style.height = args.headerWidth;
         windowHeader.style.backgroundColor = args.color;
+        windowHeader.className = 'headerInWindow'
+        window.appendChild(windowHeader);
         return window;
+    }
+
+    const settingDragThis = ( { element, outEmitter, inEmitter } ) => {
+        if( element instanceof HTMLDivElement && outEmitter instanceof EventEmitter && inEmitter instanceof EventEmitter ) {
+            const eventHandler = new EventHandler
+            const eventElement = eventHandler.createEventElement()
+            const rectInElement = {};
+            rectInElement.x = 0;
+            rectInElement.y = 0;
+            eventElement.push(
+                new EventActionClass({
+                    callback: ({event: args_event})=>{
+                        /**
+                         * @type { MouseEvent }
+                         */
+                        const event = args_event;
+                        const rect = element.getBoundingClientRect();
+                        
+                    }, caller: undefined,
+                    tag: 'mousedown',
+                    target: inEmitter
+                }),
+                new EventActionClass({
+                    callback: ({})=>{
+
+                    }, caller: undefined,
+                    tag: 'mousemove',
+                    target: outEmitter
+                }),
+                new EventActionClass({
+                    callback: ({})=>{
+
+                    }, caller: undefined,
+                    tag: 'mouseup',
+                    target: outEmitter
+                })
+            )
+
+        }
     }
 
     const settingWindows = ( args = { element: createWindow({}) } ) => {
         const element = {};
         element.element = args.element;
+        element.header = element.element.childNodes.item(0);
         element.thisEmitter = new EventEmitter(element.element);
-        element.headEmitter = new EventEmitter(element.element.childNodes.item(0));
-        dlog(element.element.childNodes.item(0));
+        element.headEmitter = new EventEmitter();
+        //dlog(element.element.childNodes.item(0));
     }
 
     settingWindows();
