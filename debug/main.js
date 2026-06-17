@@ -22,7 +22,8 @@ function main() {
 main();
 
 function part3() {
-    const htmlEmitter = new EventEmitter(document.getElementsByName('html').item(0));
+    const htmlEmitter = new EventEmitter(document)
+
 
     const deg = new dedugClass();
     const dlog = deg.getLog(true, '', '');
@@ -35,7 +36,7 @@ function part3() {
         window.style.borderStyle = args.borderStyle; window.style.borderColor = args.borderColor;
         const windowHeader = document.createElement('div');
         windowHeader.style.margin = '0px';
-        windowHeader.style.borderStyle = args.borderStyle; windowHeader.style.borderColor = args.borderColor;
+        //windowHeader.style.borderStyle = args.borderStyle; windowHeader.style.borderColor = args.borderColor;
         windowHeader.style.height = args.headerWidth;
         windowHeader.style.backgroundColor = args.color;
         windowHeader.className = 'headerInWindow'
@@ -47,9 +48,9 @@ function part3() {
         if( element instanceof HTMLDivElement && outEmitter instanceof EventEmitter && inEmitter instanceof EventEmitter ) {
             const eventHandler = new EventHandler
             const eventElement = eventHandler.createEventElement()
-            const rectInElement = {};
-            rectInElement.x = 0;
-            rectInElement.y = 0;
+            const rectInElement = {}
+            rectInElement.x = 0
+            rectInElement.y = 0
             eventElement.push(
                 new EventActionClass({
                     callback: ({event: args_event})=>{
@@ -57,41 +58,60 @@ function part3() {
                          * @type { MouseEvent }
                          */
                         const event = args_event;
-                        const rect = element.getBoundingClientRect();
-                        
+                        /* const rect = element.getBoundingClientRect()
+                        rectInElement.x = - ( event.clientX + rect.x )
+                        rectInElement.y = - ( event.clientY + rect.y ) */
+                        rectInElement.x = -event.clientX;
+                        rectInElement.y = -event.clientY;
+                        element.style.position = 'absolute'
+                        //dlog('hello')
+                        return 'next'
                     }, caller: undefined,
                     tag: 'mousedown',
                     target: inEmitter
                 }),
                 new EventActionClass({
-                    callback: ({})=>{
-
+                    callback: ({event: args_event})=>{
+                        /**
+                         * @type { MouseEvent }
+                         */
+                        const event = args_event;
+                        const x = event.clientX + rectInElement.x
+                        const y = event.clientY + rectInElement.y
+                        const setPx = val => `${val}px`
+                        element.style.left = setPx(x)
+                        element.style.top = setPx(y)
                     }, caller: undefined,
                     tag: 'mousemove',
                     target: outEmitter
                 }),
                 new EventActionClass({
                     callback: ({})=>{
-
+                        return 'try'
                     }, caller: undefined,
                     tag: 'mouseup',
                     target: outEmitter
                 })
             )
 
+            eventElement.setup.call
+            inEmitter.bind
         }
     }
 
-    const settingWindows = ( args = { element: createWindow({}) } ) => {
+    const settingWindows = ( { __element = createWindow({}) } ) => {
         const element = {};
-        element.element = args.element;
+        element.element = __element;
         element.header = element.element.childNodes.item(0);
         element.thisEmitter = new EventEmitter(element.element);
-        element.headEmitter = new EventEmitter();
+        element.headEmitter = new EventEmitter(element.header);
+
+        settingDragThis({element: element.element, inEmitter: element.headEmitter, outEmitter: htmlEmitter })
+        document.body.appendChild(element.element);
         //dlog(element.element.childNodes.item(0));
     }
 
-    settingWindows();
+    settingWindows({});
 }
 
 function part2() {
