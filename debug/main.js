@@ -41,7 +41,18 @@ function part3() {
         windowHeader.style.backgroundColor = args.color;
         windowHeader.className = 'headerInWindow'
         window.appendChild(windowHeader);
+        const sizePoint = document.createElement('div');
+        sizePoint.style.position = 'absolute';
+        sizePoint.style.right = '0px'; sizePoint.style.bottom = '0px';
+        sizePoint.style.height = '20px'; sizePoint.style.width = '20px';
+        window.appendChild(sizePoint);
         return window;
+    }
+
+    const dragEvent = ( { clickElement, moveFunction, outEmitter, inEmitter } ) => {
+        if( clickElement instanceof HTMLDivElement && typeof moveFunction === 'function' && outEmitter instanceof EventEmitter && inEmitter instanceof EventEmitter ) {
+
+        }
     }
 
     const settingDragThis = ( { element, outEmitter, inEmitter } ) => {
@@ -58,11 +69,11 @@ function part3() {
                          * @type { MouseEvent }
                          */
                         const event = args_event;
-                        /* const rect = element.getBoundingClientRect()
-                        rectInElement.x = - ( event.clientX + rect.x )
-                        rectInElement.y = - ( event.clientY + rect.y ) */
-                        rectInElement.x = -event.clientX;
-                        rectInElement.y = -event.clientY;
+                        const rect = element.getBoundingClientRect()
+                        rectInElement.x = ( -event.clientX + rect.x )
+                        rectInElement.y = ( -event.clientY + rect.y )
+                        /* rectInElement.x = -event.clientX;
+                        rectInElement.y = -event.clientY; */
                         element.style.position = 'absolute'
                         //dlog('hello')
                         return 'next'
