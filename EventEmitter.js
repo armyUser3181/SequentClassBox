@@ -106,6 +106,9 @@
     }
 
 
+    /**
+     * @type {WeakMap<HTMLElement, EventEmitter>}
+     */
     static private__weak = new WeakMap();
 
     private__weakPush() {

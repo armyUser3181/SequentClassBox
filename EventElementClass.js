@@ -13,6 +13,9 @@ export default class EventElementClass {
     /** @type {string} */
     type;
 
+    /** 
+     * @param {...EventActionClass} args
+     */
     push(...args) {
         this.actions.push(...args);
         return this;
